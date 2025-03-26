@@ -19,7 +19,6 @@ namespace DataAccess.Concrete.EntityFramework
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
                 context.SaveChanges();
-
             }
         }
 
@@ -35,12 +34,19 @@ namespace DataAccess.Concrete.EntityFramework
 
         public Product Get(Expression<Func<Product, bool>> filter)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context= new NorthwindContext())
+            {
+                return context.Set<Product>().SingleOrDefault(filter);
+            }
         }
 
         public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext context= new NorthwindContext())
+            {
+                return filter == null ? context.Set<Product>().AsNoTracking().ToList() :
+                    context.Set<Product>().Where(filter).AsNoTracking().ToList();
+            }
         }
 
         public void Update(Product entity)
