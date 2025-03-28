@@ -11,38 +11,43 @@ namespace ConsoleUI
         {
             //  GetAllProduct();
             //   GetAllCategory();
-            // GetAllProductDetails();
+            GetAllProductDetails();
             Console.ReadLine();
         }
 
         private static void GetAllProductDetails()
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var item in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+            if (result.Success)
             {
-                Console.WriteLine($"Mehsul: {item.ProductName} ---- Catagory: {item.CategoryName}");
+                foreach (var item in result.Data)
+                {
+                    Console.WriteLine($"Mehsul: {item.ProductName} ---- Catagory: {item.CategoryName}");
+                }
             }
-           
+            Console.WriteLine(result.Message);
+
         }
 
-        private static void GetAllProduct()
-        {
-            ProductManager productManager = new ProductManager(new EfProductDal());
-            Console.WriteLine("-------------------------------------------------");
-            foreach (var item in productManager.GetAll())
-            {
-                Console.WriteLine($"Adi:{item.ProductName} - Qiymeti:{item.UnitPrice} - Sayi:{item.UnitsInStock}");
-            }
-            Console.WriteLine("-------------------------------------------------");
-        }
+        //private static void GetAllProduct()
+        //{
+        //    ProductManager productManager = new ProductManager(new EfProductDal());
+        //    Console.WriteLine("-------------------------------------------------");
+        //    foreach (var item in productManager.GetAll())
+        //    {
+        //        Console.WriteLine($"Adi:{item.ProductName} - Qiymeti:{item.UnitPrice} - Sayi:{item.UnitsInStock}");
+        //    }
+        //    Console.WriteLine("-------------------------------------------------");
+        //}
 
-        private static void GetAllCategory()
-        {
-            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
-            foreach (var item in categoryManager.GetAll())
-            {
-                Console.WriteLine(item.CategoryName);
-            }
-        }
+        //private static void GetAllCategory()
+        //{
+        //    CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+        //    foreach (var item in categoryManager.GetAll())
+        //    {
+        //        Console.WriteLine(item.CategoryName);
+        //    }
+        //}
     }
 }
