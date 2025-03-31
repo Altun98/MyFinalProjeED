@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -15,22 +16,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _productDal;
+        IProductDal _productDal;     
 
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-        }
+                    }
 
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
+
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
