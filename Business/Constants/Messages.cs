@@ -15,5 +15,6 @@ namespace Business.Constants
         public static string ProductNameInvalid = "Mehsul adi minimum 2 herf olmalidir";
         public static string ProductsListed = "Mehsullar listelendi";
         public static string MintenanceTime = "Sistem uzerinde is zamani";
+        public static string ProductPriceInvalid = "Mehsulun qiymeti 0 ola bilmez";
     }
 }
