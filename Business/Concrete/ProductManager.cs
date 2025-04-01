@@ -4,6 +4,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,19 +23,29 @@ namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        IProductDal _productDal;     
+        IProductDal _productDal;
+        ICagegoryService _cagegoryService;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, ICagegoryService cagegoryService)
         {
             _productDal = productDal;
-                    }
+            _cagegoryService = cagegoryService;
+        }
 
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
 
+            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCurrent(product.CategoryID),
+                    CheckIfProductNameExixts(product.ProductName),
+                    ChectCategoryLimite());
+            if (result != null)
+            {
+                return result;
+            }
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
+
         }
 
         public IResult Delete(Product product)
@@ -83,5 +95,32 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductUpdated);
         }
         #endregion
+        private IResult CheckIfProductCountOfCategoryCurrent(int categoryID)
+        {
+            var result = _productDal.GetAll(p => p.CategoryID == categoryID).Count();
+            if (result > 23)
+            {
+                return new ErrorResult(Messages.ProductCategoryCount);
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckIfProductNameExixts(string productName)
+        {
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductCopyName);
+            }
+            return new SuccessResult();
+        }
+        private IResult ChectCategoryLimite()
+        {
+            var result = _cagegoryService.GetAll().Data.Count;
+            if (result > 15)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+        }
     }
 }

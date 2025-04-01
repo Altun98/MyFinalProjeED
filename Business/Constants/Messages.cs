@@ -16,5 +16,8 @@ namespace Business.Constants
         public static string ProductsListed = "Mehsullar listelendi";
         public static string MintenanceTime = "Sistem uzerinde is zamani";
         public static string ProductPriceInvalid = "Mehsulun qiymeti 0 ola bilmez";
+        public static string ProductCategoryCount = "bir cateqoridre en cox 10 mehsul ola biler";
+        public static string ProductCopyName = "Eyni adda product elave etmek olmaz";
+        public static string ProductNameAlreadyExists = "Bu adda mehsul movcuddur";
     }
 }

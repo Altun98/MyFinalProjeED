@@ -22,6 +22,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<CategoryManager>().As<ICagegoryService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
         //    builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
         //    builder.RegisterType<DatabaseLogger>().As<ILogger>().SingleInstance();
 

@@ -10,25 +10,12 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //  GetAllProduct();
-            //   GetAllCategory();
-            GetAllProductDetails();
+            //   GetAllCategory();           
             Console.ReadLine();
         }
 
-        private static void GetAllProductDetails()
-        {
-            ProductManager productManager = new ProductManager(new EfProductDal());
-            var result = productManager.GetProductDetails();
-            if (result.Success)
-            {
-                foreach (var item in result.Data)
-                {
-                    Console.WriteLine($"Mehsul: {item.ProductName} ---- Catagory: {item.CategoryName}");
-                }
-            }
-            Console.WriteLine(result.Message);
-
-        }
+       
+       
 
         //private static void GetAllProduct()
         //{
