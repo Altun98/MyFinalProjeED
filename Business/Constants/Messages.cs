@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,16 @@ namespace Business.Constants
         public static string ProductCategoryCount = "bir cateqoridre en cox 10 mehsul ola biler";
         public static string ProductCopyName = "Eyni adda product elave etmek olmaz";
         public static string ProductNameAlreadyExists = "Bu adda mehsul movcuddur";
+        public static string CategoryAdded = "Yeni category elave edildi";
+        public static string CategoryUpdated = "Category yenilendi";
+        public static string CategoryDeleted = "Categori silindi";
+        public static string AuthorizationDenied = "sizin bu emeliyyata icazeniz yoxdur";
+        public static string UserAdded = "Yeni user elave edildi";
+        public static string UserRegistered="istifadecinin zaten qeydiyyati var";
+        public static string UserNotFound="istifadeci tapilmadi";
+        public static string PasswordError;
+        public static string SuccessfulLogin="Uqurlu giris";
+        public static string UserAlreadyExists;
+        public static string AccessTokenCreated;
     }
 }

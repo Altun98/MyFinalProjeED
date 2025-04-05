@@ -11,5 +11,6 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfOrderDal:EfEntityRepositoryBase<Order, NorthwindContext>, IOrderDal
     {
+
     }
 }

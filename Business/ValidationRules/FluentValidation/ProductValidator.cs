@@ -17,12 +17,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.UnitPrice).NotNull();
             RuleFor(p => p.UnitsInStock).NotNull();
             RuleFor(p => p.UnitPrice).GreaterThan(0);
-            RuleFor(p => p.UnitPrice).GreaterThanOrEqualTo(10).When(p => p.CategoryID == 1).WithMessage("bu cateqori ucun min qiymet 10 olmalidir ");
-            RuleFor(p=>p.ProductName).Must(StartwithA);
         }
-        private bool StartwithA(string arg)
-        {
-            return arg.StartsWith("A");
-        }
+
     }
 }

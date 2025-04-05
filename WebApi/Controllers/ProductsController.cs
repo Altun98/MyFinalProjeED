@@ -29,6 +29,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
         [HttpPost("add")]
+
         public IActionResult Add(Product product)
         {
             var result = _productService.Add(product);

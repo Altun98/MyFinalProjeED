@@ -13,5 +13,8 @@ namespace Business.Abstract
     {
         IDataResult<List<Category>> GetAll();
         IDataResult<Category> GetByID(int categoryId);
+        IResult Add(Category category);
+        IResult Update(Category category);
+        IResult Detele(Category category);
     }
 }

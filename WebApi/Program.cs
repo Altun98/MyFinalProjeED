@@ -1,4 +1,4 @@
-
+﻿
 using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Abstract;
@@ -10,6 +10,11 @@ using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
 using Autofac;
 using Business.ValidationRules.FluentValidation;
+using Core.Utilities.Security.JWT;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.IoC;
 
 namespace WebApi
 {
@@ -21,16 +26,33 @@ namespace WebApi
 
             // Add services to the container.
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
             {
                 builder.RegisterModule(new AutofacBusinessModule());
             });
             //    builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
+            // JWT autentifikasiyasını əlavə edirik
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
+            builder.Services.AddAuthentication();
+
+            ServiceTool.Create(builder.Services);
             builder.Services.AddControllers();
-           
-          //  builder.Services.AddValidatorsFromAssamblyContaining<ProductValidator>();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -42,7 +64,7 @@ namespace WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            //JwtBearerDefaults
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
