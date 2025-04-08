@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Concrete;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +32,8 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
         [HttpPost("add")]
-
+        [SecuredOperation("admin,product.add")]// icazenin olub olmamasi
+        [ValidationAspect(typeof(ProductValidator))]
         public IActionResult Add(Product product)
         {
             var result = _productService.Add(product);

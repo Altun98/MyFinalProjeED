@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Business.Abstract;
 using Business.Constants;
 using Core.Entities.Concrete;
@@ -6,14 +9,12 @@ using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
 
 namespace Business.Concrete
 {
+
     public class AuthManager : IAuthService
     {
         private IUserService _userService;
@@ -40,6 +41,7 @@ namespace Business.Concrete
             };
             _userService.Add(user);
             return new SuccessDateResult<User>(user, Messages.UserRegistered);
+
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -54,19 +56,18 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
             }
-
             return new SuccessDateResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
         }
 
+
         public IResult UserExists(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            if (_userService.GetByMail(email) == null)
             {
                 return new ErrorResult(Messages.UserAlreadyExists);
             }
             return new SuccessResult();
         }
-
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
